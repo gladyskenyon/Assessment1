@@ -1,0 +1,86 @@
+#open libraries
+import random
+import operator
+import matplotlib.pyplot
+import agentframework
+import csv 
+
+# to get the same results every time    
+#random.seed(1)
+
+#control for number of agents
+num_of_agents = 10
+#create varibale for movement 
+num_of_iterations = 100
+#create an empty list called environment
+environment = [] 
+#Create an empty list of agents
+agents = []
+
+#pythagorus theorum  
+def distance_between(agents_row_a, agents_row_b):
+     return (((agents_row_a.x - agents_row_b.x)**2) + 
+         ((agents_row_a.y - agents_row_b.y)**2))**0.5
+ 
+
+ 
+f = open('in.txt', newline= '') 
+reader = csv.reader(f, quoting=csv.QUOTE_NONNUMERIC)
+for row in reader:	
+#create an empty list called rowlist
+    rowlist = [] 
+    for value in row:
+        rowlist.append(value)
+    environment.append(rowlist)
+f.close()			
+
+#display environmental data 
+matplotlib.pyplot.imshow(environment)
+matplotlib.pyplot.show() 
+ 
+# create for-loop to make list of agent co-ordinates 
+for i in range(num_of_agents):
+#add the co-ordinates 
+    agents.append(agentframework.Agent(environment))
+
+ # nest loops to move agents according to variables
+for j in range(num_of_iterations):
+    for i in range(num_of_agents):
+        agents[i].move()
+        agents[i].eat()
+        
+        
+#set limits for x and y axis 
+matplotlib.pyplot.xlim(0, 99)
+matplotlib.pyplot.ylim(0, 99)
+matplotlib.pyplot.imshow(environment)
+
+for i in range(num_of_agents):
+# make scatter plot
+    matplotlib.pyplot.scatter(agents[i].x,agents[i].y)
+matplotlib.pyplot.show()
+
+for agents_row_a in agents:
+    for agents_row_b in agents:
+        distance = distance_between(agents_row_a, agents_row_b)
+
+# function to extract the second element of the list
+#print(max(agents, key=operator.itemgetter(1)))  
+#matplotlib.pyplot.scatter(m[1],m[0], color='red')
+#matplotlib.pyplot.show()
+#use the modulus operator 
+  #       if random.random() < 0.5:
+   #          agents[i][0] = (agents[i][0] + 1) % 100
+    #     else:
+     #        agents[i][0] = (agents[i][0] - 1) % 100
+# repeat for x co-ordinate 
+      #   if random.random() < 0.5:
+       #      agents[i][1] = (agents[i][1] + 1) % 100
+        # else:
+         #    agents[i][1] = (agents[i][1] - 1) % 100
+#how could we test this more formally?
+#make a single agent 
+#a = agentframework.Agent() 
+#print(a.y, a.x)
+#a.move()
+#print(a.y, a.x) 
